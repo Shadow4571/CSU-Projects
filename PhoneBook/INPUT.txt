@@ -1,0 +1,19 @@
+5 3
+261498
+Pupkin Vasiliy Vasilyevich
+Lenina 24-16
+921611
+Smirnov Pavel Andreevich
+Kopylova 10-106
+559173
+Ivanova Marina Alexandrovna
+Kalinina 120-51
+267114
+Sidorov Dmitriy Evgenyevich
+Mira 22-14
+861730
+Petrova Anna Ivanovna
+Totmina 9-3
+261498
+559173
+861730
