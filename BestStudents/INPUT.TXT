@@ -1,0 +1,11 @@
+5 4
+Dmitriev Maksim
+2 2 5 2
+Petrov Artur
+4 4 5 2
+Kuznetsova Elena
+3 3 4 3
+Popov Alexandr
+5 4 3 2
+Ivanova Svetlana
+3 2 5 5
