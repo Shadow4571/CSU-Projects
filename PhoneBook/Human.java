@@ -1,7 +1,7 @@
 
 public class Human {
 	private int PhoneNumber;
-	private String FirstName, LastName, Patronymic, FullName;
+	private String FirstName, LastName, Patronymic;
 	private Adress HumanAdress;
 	
 	public Human(int PhoneNumber, String FullName, Adress HumanAdress ) {
