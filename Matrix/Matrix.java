@@ -1,129 +1,161 @@
 
 public class Matrix {
-	private int[][] Matrix;					// Matrix
+	private int[] Matrix;					// Matrix
 	private int Row, Column;				// Width and Height
+	private boolean IsSquare, IsTransposed;	// Is the matrix square and has it been transposed
 	
-	/* ================================== */
-	/* ========== CONSTRUCTORS ========== */
+	/* ================================= */
+	/* ========== CONSTRUCTOR ========== */
 	
-	// Constructor for a rectangular matrix
-	public Matrix(int Row, int Column) {
-		this.Row = Row;
-		this.Column = Column;
-		this.Matrix = new int[Row][Column];
-		this.FillMatrix();
-	}
-	
-	// Constructor filling a matrix with a certain number
-	public Matrix(int Row, int Column, int Number) {
-		this.Row = Row;
-		this.Column = Column;
-		this.Matrix = new int[Row][Column];
-		this.FillMatrix(Number);
-	}
-	
-	// Constructor for a square matrix
+	// Create a square matrix and fill with random numbers
 	public Matrix(int Row) {
 		this.Row = Row;
 		this.Column = Row;
-		this.Matrix = new int[Row][Row];
+		this.Matrix = new int[Row * Row];
+		this.IsSquare = true;
+		this.IsTransposed = false;
 		this.FillMatrix();
 	}
 	
-	// Constructor to create a matrix from the source
-	public Matrix(Matrix New) {
-		this.Row = New.GetRow();
-		this.Column = New.GetColumn();
-		this.Matrix = new int[this.Row][this.Column];
-		
-		for(int i = 0; i < this.Row; i++) 
-			for(int j = 0; j < this.Column; j++) 
-				this.Matrix[i][j] = New.ReturnElementByPosition(i, j);
-	}
-	
-	// Constructor creating a matrix from a two-dimensional array
-	public Matrix(int Row, int Column, int[][] New) {
+	// Create a square/rectangular matrix and fill with random numbers
+	public Matrix(int Row, int Column) {
 		this.Row = Row;
 		this.Column = Column;
-		this.Matrix = new int[this.Row][this.Column];
+		this.Matrix = new int[Row * Column];
 		
-		for(int i = 0; i < this.Row; i++) 
-			for(int j = 0; j < this.Column; j++) 
-				this.Matrix[i][j] = New[i][j];
+		if(this.Row == this.Column)
+			this.IsSquare = true;
+		else 
+			this.IsSquare = false;
+		
+		this.IsTransposed = false;
+		this.FillMatrix();
 	}
 	
-	// Constructor creating a transposed matrix
-	public Matrix(int[][] TransNew, int TransRow, int TransColumn) {
-		this.Row = TransRow;
-		this.Column = TransColumn;
-		this.Matrix = new int[this.Row][this.Column];
+	// Create a square/rectangular matrix and fill with current number
+	public Matrix(int Row, int Column, int Number) {
+		this.Row = Row;
+		this.Column = Column;
+		this.Matrix = new int[Row * Column];
 		
-		for(int i = 0; i < this.Row; i++) 
-			for(int j = 0; j < this.Column; j++) 
-				this.Matrix[i][j] = TransNew[j][i];
+		if(this.Row == this.Column)
+			this.IsSquare = true;
+		else 
+			this.IsSquare = false;
+		
+		this.IsTransposed = false;
+		this.FillMatrix(Number);
+	}
+	
+	// Create a square/rectangular matrix from array
+	public Matrix(int Row, int Column, int[] Array) {
+		if(Array.length != Row * Column) {
+			this.Row = 1;
+			this.Column = 1;
+			this.Matrix = new int[1];
+		} else {
+			this.Row = Row;
+			this.Column = Column;
+			this.Matrix = new int[Row * Column];
+			for(int i = 0; i < Row * Column; i++)
+				this.Matrix[i] = Array[i];
+		}
+		
+		if(Row == Column)
+			this.IsSquare = true;
+		else 
+			this.IsSquare = false;
+		
+		this.IsTransposed = false;
 	}
 	
 	/* ================================ */
 	/* ============ PUBLIC ============ */
-			
-	// Return width and height dimensions
+	
 	public int GetRow() { return this.Row; }
 	public int GetColumn() { return this.Column; }
+	public int[] GetMatrixArray() { return this.Matrix; }
+	public boolean GetIsSquare() { return this.IsSquare; }
+	public boolean GetIsTransposed() { return this.IsTransposed; } 
 	
-	// Print matrix to console
-	public void PrintMatrix() {
-		for(int i = 0; i < this.Row; i++) {
-			for(int j = 0; j < this.Column; j++)
-				System.out.print(Matrix[i][j] + " ");
-			
-			System.out.println();
-		}
+	// Return matrix item from position
+	public int GetElementByPosition(int i, int j) {
+		if(this.CheckRange(i, j))
+			return this.Matrix[j * this.Row + i];
+		
+		return Integer.MIN_VALUE;
 	}
 	
-	// Print transposed matrix to console
-	public void PrintTransposedMatrix() {
-		for(int i = 0; i < this.Column; i++) {
-			for(int j = 0; j < this.Row; j++) 
-				System.out.print(this.Matrix[j][i] + " ");
-			
-			System.out.println();
-		}
+	// Return item from array position
+	public int GetElementByPosition(int Position) {
+		if(this.CheckRange(Position))
+			return this.Matrix[Position];
+		else
+			return Integer.MIN_VALUE;
 	}
 	
-	// Return element by position
-	public int ReturnElementByPosition(int Row, int Column) {
-		if(this.CheckRange(Row, Column))
-			return this.Matrix[Row][Column];
+	// Set item to matrix position
+	public boolean SetElementByPosition(int i, int j, int Number) {
+		if(this.CheckRange(i, j)) {
+			this.Matrix[j * this.Row + i] = Number;
+			
+			return true;
+		}
+		
+		return false;
+	}
+	
+	// Set item to array position
+	public boolean SetElementByPosition(int Position, int Number) {
+		if(this.CheckRange(Position)) {
+			this.Matrix[Position] = Number;
+			
+			return true;
+		}
+		
+		return false;
+	}
+	
+	// Add number to matrix item
+	public boolean AddNumberInPosition(int i, int j, int Number) {
+		if(this.CheckRange(Row, Column)) {
+			this.Matrix[j * this.Row + i] += Number;
+			
+			return true;
+		}
+		
+		return false;
+	}
+	
+	// Add a number to each item of the matrix
+	public boolean AddNumberInMatrix(int Number) {
+		for(int i = 0; i < this.Row * this.Column; i++)
+			this.Matrix[i] += Number;
+		
+		return true;
+	}
+	
+	// Add each matrix item to each item of the matrix
+	public boolean AddNumberInMatrix(Matrix Temp) {
+		if((this.Row == Temp.GetRow() && this.Column == Temp.GetColumn()) || (this.Row == Temp.GetColumn() && this.Column == Temp.GetRow())) {
+			for(int i = 0; i < this.Row * this.Column; i++)
+				this.Matrix[i] += Temp.GetElementByPosition(i);
+			
+			return true;
+		}
+		
+		return false;
+	}
+	
+	// Transpose matrix
+	public boolean TransposeMatrix() {
+		if(this.IsSquare)
+			this.TransposeSquare();
 		else 
-			return 0;
-	}
-	
-	// Set the specified element in position
-	public void SetElementByPosition(int Row, int Column, int Number) {
-		if(this.CheckRange(Row, Column))
-			this.Matrix[Row][Column] = Number;
-	}
-	
-	// Add number in position
-	public void AddNumberToPosition(int Row, int Column, int Number) {
-		if(this.CheckRange(Row, Column))
-			this.Matrix[Row][Column] += Number;
-	}
-	
-	// Add a number to each element of the matrix
-	public void AddNumberToMatrix(int Number) {
-		for(int i = 0; i < this.Row; i++)
-			for(int j = 0; j < this.Column; j++)
-				this.Matrix[i][j] += Number;
-	}
-	
-	// Add to each element of the matrix the corresponding element of the second matrix
-	public void AddNumberToMatrix(Matrix AddMat) {
-		if(this.CheckRange(AddMat.GetRow(), AddMat.GetColumn())) {
-			for(int i = 0; i < this.Row; i++)
-				for(int j = 0; j < this.Column; j++)
-					this.Matrix[i][j] += AddMat.ReturnElementByPosition(i, j);
-		}
+			this.TransposeRect();
+		
+		this.IsTransposed = !this.IsTransposed;
+		return true;
 	}
 	
 	// Return matrix
@@ -133,23 +165,9 @@ public class Matrix {
 	
 	// Return transposed matrix
 	public Matrix ReturnTransposedMatrix() {
-		return new Matrix(this.Matrix, this.Column, this.Row);
-	}
-	
-	// Multiply the matrix by another matrix
-	public Matrix MultiplyMatrix(Matrix MultiplyMat) {
-		if(this.Column == MultiplyMat.GetRow()) {
-			Matrix Temp = new Matrix(this.Row, MultiplyMat.GetColumn(), 0);
-			for(int i = 0; i < Temp.GetRow(); i++) {
-				for(int j = 0; j < Temp.GetColumn(); j++) {
-					for(int k = 0; k < this.Column; k++) {
-						Temp.AddNumberToPosition(i, j, this.Matrix[i][k] * MultiplyMat.ReturnElementByPosition(k, j));
-					}
-				}
-			}
-			return Temp;
-		}
-		return new Matrix(1);
+		Matrix Temp = new Matrix(this.Row, this.Column, this.Matrix);
+		Temp.TransposeMatrix();
+		return Temp;
 	}
 	
 	/* ================================= */
@@ -157,20 +175,53 @@ public class Matrix {
 	
 	// Fill the matrix with random numbers
 	private void FillMatrix() {
-		for(int i = 0; i < this.Row; i++)
-			for(int j = 0; j < this.Column; j++)
-				this.Matrix[i][j] = (int)(Math.random() * 100);
+		for(int i = 0; i < this.Row * this.Column; i++)
+			this.Matrix[i] = (int)(Math.random() * 100);
 	}
 	
 	// fill the matrix with a number
 	private void FillMatrix(int Number) {
-		for(int i = 0; i < this.Row; i++)
-			for(int j = 0; j < this.Column; j++)
-				this.Matrix[i][j] = Number;
+		for(int i = 0; i < this.Row * this.Column; i++)
+			this.Matrix[i] = Number;
 	}
 	
 	// Check if the position fits in the matrix size
-	private boolean CheckRange(int Row, int Column) {
-		return (Row > -1 && Column > -1) && (Row < this.Row && Column < this.Column);
+	private boolean CheckRange(int i, int j) {
+		return (i > -1 && j > -1) && (i < this.Row && j < this.Column);
+	}
+	
+	// Check if the position fits in the array size
+	private boolean CheckRange(int Position) {
+		return (Position > -1) && (Position < this.Row * this.Column);
+	}
+	
+	// Transpose square matrix
+	private void TransposeSquare() {
+		int Array[] = new int[this.Row * this.Column];
+		int Count = 0;
+		
+		for(int i = 0; i < this.Column; i++)
+			for(int j = 0; j < this.Row; j++)
+				Array[Count++] = this.Matrix[j * this.Column + i];
+		
+		for(int i = 0; i < this.Row * this.Column; i++)
+			this.Matrix[i] = Array[i];
+	}
+	
+	// Transpose rectangular matrix
+	private void TransposeRect() {
+		int Array[] = new int[this.Row * this.Column];
+		int Count = 0;
+		
+		for(int i = 0; i < this.Row; i++)
+			for(int j = 0; j < this.Column; j++)
+				Array[Count++] = this.Matrix[j * this.Row + i];
+		
+		for(int i = 0; i < this.Row * this.Column; i++)
+			this.Matrix[i] = Array[i];
+		
+		int Temp = this.Row;
+		this.Row = this.Column;
+		this.Column = Temp;
 	}
 }
