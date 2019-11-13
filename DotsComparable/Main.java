@@ -1,18 +1,37 @@
+import java.util.Arrays;
+
 import coordinate_axis.Dot3D;
 
 public class Main {
+	public static Object FindMax(Object Array[]) {
+		Object maxObject = Array[0];
+		
+		for(int i = 0; i < Array.length; i++)
+			if(((Dot3D)maxObject).compareTo((Dot3D)Array[i]) < 0)
+				maxObject = Array[i];
+					
+		return maxObject;
+	}
+	
 	public static void main(String[] args) {
-		Dot3D TempDot1 = new Dot3D(2, 5, 3);
-		Dot3D TempDot2 = new Dot3D(4, 6, 5);
+		int Size = 4;
+		Dot3D Array[] = new Dot3D[Size];
 		
-		System.out.println("FIRST DOT - " + TempDot1);
-		System.out.println("SECOND DOT - " + TempDot2);
+		for(int i = 0; i < Size; i++)
+			Array[i] = new Dot3D(Size - i, Size - i, Size - i);
 		
-		System.out.println("LENGHT BETWEEN FIRST AND SECOND - " + TempDot1.DotLenght(TempDot2));
-		System.out.println("LENGHT BETWEEN FIRST AND CENTER - " + TempDot1.Lenght());
-		System.out.println("LENGHT BETWEEN SECOND AND CENTER - " + TempDot2.Lenght());
-		System.out.println("IS FIRST LESS THEN SECOND - " + TempDot1.LessThen(TempDot2));
-		System.out.println("IS FIRST MORE THEN SECOND - " + TempDot1.MoreThen(TempDot2));
+		System.out.println("ORIGINAL ARRAY");
+		for(Dot3D i : Array)
+			System.out.println(i);
+		
+		Arrays.sort(Array);
+		
+		System.out.println("\n" + "CHANGED ARRAY");
+		for(Dot3D i : Array)
+			System.out.println(i);
+		
+		System.out.println("\n" + "MAX ELEMENT");
+		System.out.println((Dot3D)(Main.FindMax(Array)));
 	}
 
 }

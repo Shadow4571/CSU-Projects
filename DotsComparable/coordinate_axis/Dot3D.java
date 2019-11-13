@@ -1,6 +1,6 @@
 package coordinate_axis;
 
-public class Dot3D extends Dot2D {
+public class Dot3D extends Dot2D implements Comparable<Object> {
 	protected double CoordZ;
 	
 	public Dot3D() {
@@ -33,5 +33,17 @@ public class Dot3D extends Dot2D {
 	
 	public boolean MoreThen(Dot3D Second) {
 		return (this.CoordX > Second.GetCoordX()) && (this.CoordY > Second.GetCoordY()) && (this.CoordZ > Second.GetCoordZ());
+	}
+
+	@Override
+	public int compareTo(Object Second) {
+		double Result = this.Lenght() - ((Dot3D)Second).Lenght();
+		
+		if(Result > 0)
+			return 1;
+		else if(Result == 0)
+			return 0;
+		
+		return -1;
 	}
 }
